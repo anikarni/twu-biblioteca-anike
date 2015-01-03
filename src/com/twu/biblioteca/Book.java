@@ -29,4 +29,8 @@ public class Book {
     public void checkout() {
         this.status = "unavailable";
     }
+
+    public void returned(){
+        this.status = "available";
+    }
 }

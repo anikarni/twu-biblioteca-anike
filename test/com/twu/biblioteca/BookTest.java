@@ -29,5 +29,12 @@ public class BookTest {
         book.checkout();
         assertEquals("unavailable", book.getStatus());
     }
+
+    @Test
+    public void returned(){
+        book.checkout();
+        book.returned();
+        assertEquals("available", book.getStatus());
+    }
 }
 

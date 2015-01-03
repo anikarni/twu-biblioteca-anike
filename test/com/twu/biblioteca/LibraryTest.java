@@ -99,4 +99,26 @@ public class LibraryTest {
         library.checkout("fdfsd");
         assertThat(outContent.toString(), containsString("That book is not available."));
     }
+
+    @Test
+    public void chooseReturn(){
+        ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
+        System.setIn(inContent);
+        library.selectOption("Return Book");
+        assertThat(outContent.toString(), containsString("Which book would you like to return?"));
+    }
+
+    @Test
+    public void returnBookSuccessfully(){
+        library.checkout("Book Example");
+        library.returnBook("Book Example");
+        assertEquals("Book Example", library.getAvailableBooks().get(0).getTitle());
+        assertThat(outContent.toString(), containsString("Thank you for returning the book."));
+    }
+
+    @Test
+    public void returntBookUnsuccessfully(){
+        library.returnBook("fdfsd");
+        assertThat(outContent.toString(), containsString("That is not a valid book to return."));
+    }
 }

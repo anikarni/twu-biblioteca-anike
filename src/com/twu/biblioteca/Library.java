@@ -8,7 +8,7 @@ import java.util.Scanner;
  * Created by anikarni on 29/12/14.
  */
 public class Library {
-    private static String[] OPTIONS = {"List Books", "Checkout Book", "Quit"};
+    private static String[] OPTIONS = {"List Books", "Checkout Book", "Return Book", "Quit"};
 
     private Book[] books;
     private List<Book> availableBooks;
@@ -59,6 +59,8 @@ public class Library {
             quitLibrary();
         }else if(option.equals("Checkout Book")){
             askToCheckout();
+        }else if(option.equals("Return Book")){
+            askToReturn();
         }else{
             invalidOption();
         }
@@ -83,9 +85,26 @@ public class Library {
             if(book.getTitle().equals(title)){
                 book.checkout();
                 System.out.println(book.getTitle() + "successfully checkout out. Thank you! Enjoy the book.");
-                break;
+                return;
             }
         }
         System.out.println("That book is not available.");
+    }
+
+    public void askToReturn(){
+        System.out.println("Which book would you like to return?");
+        Scanner sc = new Scanner(System.in);
+        checkout(sc.nextLine());
+    }
+
+    public void returnBook(String title){
+        for(Book book: this.books){
+            if(book.getTitle().equals(title)){
+                book.returned();
+                System.out.println("Thank you for returning the book.");
+                return;
+            }
+        }
+        System.out.println("That is not a valid book to return.");
     }
 }
