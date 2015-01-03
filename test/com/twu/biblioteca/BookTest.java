@@ -20,4 +20,14 @@ public class BookTest {
 
     @Test
     public void getsYear() { assertEquals(1991, book.getYear());}
+
+    @Test
+    public void getsStatus() { assertEquals("available", book.getStatus());}
+
+    @Test
+    public void checkout() {
+        book.checkout();
+        assertEquals("unavailable", book.getStatus());
+    }
 }
+

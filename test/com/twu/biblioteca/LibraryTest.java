@@ -5,13 +5,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import static org.junit.Assert.assertThat;
+
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.*;
 
 /**
  * Created by anikarni on 29/12/14.
@@ -35,7 +34,7 @@ public class LibraryTest {
 
     @Test
     public void getsBooks() {
-        assertEquals(book, library.getBooks()[0]);
+        assertArrayEquals(books, library.getBooks());
     }
 
     @Test
@@ -78,5 +77,26 @@ public class LibraryTest {
     public void quits(){
         library.selectOption("Quit");
         assertThat(outContent.toString(), containsString("Goodbye!"));
+    }
+
+    @Test
+    public void chooseCheckout(){
+        ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
+        System.setIn(inContent);
+        library.selectOption("Checkout Book");
+        assertThat(outContent.toString(), containsString("Which book would you like to checkout?"));
+    }
+
+    @Test
+    public void checkoutBookSuccessfully(){
+        library.checkout("Book Example");
+        assertNotEquals(books, library.getAvailableBooks());
+        assertThat(outContent.toString(), containsString("Thank you! Enjoy the book."));
+    }
+
+    @Test
+    public void checkoutBookUnsuccessfully(){
+        library.checkout("fdfsd");
+        assertThat(outContent.toString(), containsString("That book is not available."));
     }
 }
