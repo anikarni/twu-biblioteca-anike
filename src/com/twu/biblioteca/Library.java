@@ -14,5 +14,13 @@ public class Library {
         return this.books;
     }
 
+    public void welcomeUser(){
+        System.out.println("Welcome to Biblioteca!");
+    }
 
+    public void showAvailableBooks(){
+        for (Book book: this.books){
+            System.out.println(book.getName());
+        }
+    }
 }
