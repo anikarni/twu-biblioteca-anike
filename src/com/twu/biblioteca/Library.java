@@ -84,7 +84,7 @@ public class Library {
         for(Book book: this.availableBooks){
             if(book.getTitle().equals(title)){
                 book.checkout();
-                System.out.println(book.getTitle() + "successfully checkout out. Thank you! Enjoy the book.");
+                System.out.println(book.getTitle() + " successfully checkout out. Thank you! Enjoy the book.");
                 return;
             }
         }
@@ -94,7 +94,7 @@ public class Library {
     public void askToReturn(){
         System.out.println("Which book would you like to return?");
         Scanner sc = new Scanner(System.in);
-        checkout(sc.nextLine());
+        returnBook(sc.nextLine());
     }
 
     public void returnBook(String title){
