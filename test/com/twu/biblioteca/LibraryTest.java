@@ -73,4 +73,10 @@ public class LibraryTest {
         library.selectOption("List book");
         assertThat(outContent.toString(), containsString("Select a valid option!"));
     }
+
+    @Test
+    public void quits(){
+        library.selectOption("Quit");
+        assertThat(outContent.toString(), containsString("Goodbye!"));
+    }
 }
