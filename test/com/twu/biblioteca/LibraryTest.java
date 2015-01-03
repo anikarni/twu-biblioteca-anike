@@ -17,7 +17,7 @@ import static org.hamcrest.CoreMatchers.containsString;
  */
 public class LibraryTest {
     Book[] books = new Book[1];
-    Book book = new Book("Book Example");
+    Book book = new Book("Book Example", "Anike", 1991);
     Library library = new Library(books);
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -48,6 +48,6 @@ public class LibraryTest {
     public void printsAvailableBooks(){
         books[0] = book;
         library.showAvailableBooks();
-        assertThat(outContent.toString(), containsString("Book Example"));
+        assertThat(outContent.toString(), containsString("Book Example, Anike, 1991"));
     }
 }

@@ -20,7 +20,7 @@ public class Library {
 
     public void showAvailableBooks(){
         for (Book book: this.books){
-            System.out.println(book.getName());
+            System.out.println("" + book.getTitle() + ", " + book.getAuthor() + ", " + book.getYear() + "");
         }
     }
 }
