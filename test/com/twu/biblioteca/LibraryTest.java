@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import static org.junit.Assert.assertThat;
@@ -16,8 +17,8 @@ import static org.hamcrest.CoreMatchers.containsString;
  * Created by anikarni on 29/12/14.
  */
 public class LibraryTest {
-    Book[] books = new Book[1];
     Book book = new Book("Book Example", "Anike", 1991);
+    Book[] books = {book};
     Library library = new Library(books);
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -34,7 +35,6 @@ public class LibraryTest {
 
     @Test
     public void getsBooks() {
-        books[0] = book;
         assertEquals(book, library.getBooks()[0]);
     }
 
@@ -46,8 +46,31 @@ public class LibraryTest {
 
     @Test
     public void printsAvailableBooks(){
-        books[0] = book;
         library.showAvailableBooks();
         assertThat(outContent.toString(), containsString("Book Example, Anike, 1991"));
+    }
+
+    @Test
+    public void showsMenu(){
+        library.showMenu();
+        assertThat(outContent.toString(), containsString("Menu:"));
+    }
+
+    @Test
+    public void showsMenuOptionListBooks(){
+        library.showMenu();
+        assertThat(outContent.toString(), containsString("List Books"));
+    }
+
+    @Test
+    public void showsBookListWhenChosen(){
+        library.selectOption("List Books");
+        assertThat(outContent.toString(), containsString("Book Example, Anike, 1991"));
+    }
+
+    @Test
+    public void invalidatesOption(){
+        library.selectOption("List book");
+        assertThat(outContent.toString(), containsString("Select a valid option!"));
     }
 }
