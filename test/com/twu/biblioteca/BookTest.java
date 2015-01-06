@@ -11,6 +11,11 @@ public class BookTest {
     Book book = new Book("Book Example", "Anike", 1991);
 
     @Test
+    public void printsString() {
+        assertEquals("Book Example, Anike, 1991", book.toString());
+    }
+
+    @Test
     public void getsTitle() {
         assertEquals("Book Example", book.getTitle());
     }

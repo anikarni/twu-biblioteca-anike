@@ -16,6 +16,9 @@ public class Movie {
         this.rating = rating;
     }
 
-    
+    @Override
+    public String toString(){
+        return this.title + ", " + this.year + ", " + this.director + ", " + this.rating;
+    }
 
 }

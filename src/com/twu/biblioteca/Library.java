@@ -41,7 +41,7 @@ public class Library {
 
     public void showBooks(){
         for (Book book: getBooks()){
-            System.out.println(book.getTitle() + ", " + book.getAuthor() + ", " + book.getYear());
+            System.out.println(book.toString());
         }
     }
 

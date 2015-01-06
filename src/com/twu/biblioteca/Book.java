@@ -16,6 +16,11 @@ public class Book {
         this.status = "available";
     }
 
+    @Override
+    public String toString() {
+        return this.title + ", " + this.author + ", " + this.year;
+    }
+
     public String getTitle(){
         return this.title;
     }
