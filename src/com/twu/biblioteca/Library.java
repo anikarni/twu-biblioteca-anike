@@ -81,9 +81,13 @@ public class Library {
     }
 
     public void askToCheckout(Item[] items){
-        System.out.println("Which item would you like to checkout? (title only)");
-        Scanner sc = new Scanner(System.in);
-        checkout(sc.nextLine(), items);
+        if(isLoggedIn()) {
+            System.out.println("Which item would you like to checkout? (title only)");
+            Scanner sc = new Scanner(System.in);
+            checkout(sc.nextLine(), items);
+        }else{
+            System.out.println("You must login to checkout an item.");
+        }
     }
 
     public void checkout(String title, Item[] items){
@@ -91,7 +95,7 @@ public class Library {
         for(Item item: getAvailable(items)){
             type = item.getType();
             if(item.getTitle().equals(title)){
-                item.checkout();
+                this.currentCustomer.checkout(item);
                 System.out.println(item.getTitle() + " successfully checkout out. Thank you! Enjoy the " +
                         type + ".");
                 return;

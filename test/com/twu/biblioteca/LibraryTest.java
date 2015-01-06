@@ -26,6 +26,12 @@ public class LibraryTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
+    public void loginCustomer(){
+        ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n123".getBytes());
+        System.setIn(inContent);
+        library.login();
+    }
+
     @Before
     public void setUpStreams() {
         System.setOut(new PrintStream(outContent));
@@ -90,6 +96,7 @@ public class LibraryTest {
 
     @Test
     public void chooseCheckoutBook(){
+        loginCustomer();
         ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
         System.setIn(inContent);
         library.selectOption("Checkout Book");
@@ -98,6 +105,7 @@ public class LibraryTest {
 
     @Test
     public void chooseCheckoutMovie(){
+        loginCustomer();
         ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
         System.setIn(inContent);
         library.selectOption("Checkout Movie");
@@ -105,7 +113,16 @@ public class LibraryTest {
     }
 
     @Test
+    public void chooseCheckoutMovieWithoutLogin(){
+        ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
+        System.setIn(inContent);
+        library.selectOption("Checkout Movie");
+        assertThat(outContent.toString(), containsString("You must login to checkout an item."));
+    }
+
+    @Test
     public void checkoutBookSuccessfully(){
+        loginCustomer();
         library.checkout("Book Example", books);
         assertNotEquals(books, library.getAvailable(books));
         assertThat(outContent.toString(), containsString("Thank you! Enjoy the book."));
@@ -113,6 +130,7 @@ public class LibraryTest {
 
     @Test
     public void checkoutMovieSuccessfully(){
+        loginCustomer();
         library.checkout("Title", movies);
         assertNotEquals(movies, library.getAvailable(movies));
         assertThat(outContent.toString(), containsString("Thank you! Enjoy the movie."));
@@ -120,12 +138,14 @@ public class LibraryTest {
 
     @Test
     public void checkoutBookUnsuccessfully(){
+        loginCustomer();
         library.checkout("fdfsd", books);
         assertThat(outContent.toString(), containsString("That book is not available."));
     }
 
     @Test
     public void checkoutMovieUnsuccessfully(){
+        loginCustomer();
         library.checkout("fdfsd", movies);
         assertThat(outContent.toString(), containsString("That movie is not available."));
     }
@@ -148,6 +168,7 @@ public class LibraryTest {
 
     @Test
     public void returnBookSuccessfully(){
+        loginCustomer();
         library.checkout("Book Example", books);
         library.returnItem("Book Example", books);
         assertEquals("Book Example", library.getAvailable(books).get(0).getTitle());
@@ -156,6 +177,7 @@ public class LibraryTest {
 
     @Test
     public void returnMovieSuccessfully(){
+        loginCustomer();
         library.checkout("Title", movies);
         library.returnItem("Title", movies);
         assertEquals("Title", library.getAvailable(movies).get(0).getTitle());
@@ -196,5 +218,16 @@ public class LibraryTest {
         System.setIn(inContent);
         library.login();
         assertThat(outContent.toString(), containsString("Password does not match."));
+    }
+
+    @Test
+    public void isLoggedInWhenCustomerLogsIn(){
+        loginCustomer();
+        assertTrue(library.isLoggedIn());
+    }
+
+    @Test
+    public void isNotLoggedIn(){
+        assertFalse(library.isLoggedIn());
     }
 }
