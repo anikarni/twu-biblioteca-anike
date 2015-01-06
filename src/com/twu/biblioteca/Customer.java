@@ -36,4 +36,9 @@ public class Customer {
         this.items.remove(i);
         item.returned();
     }
+
+    @Override
+    public String toString(){
+        return "Username: " + this.username + "\nPassword: " + this.password;
+    }
 }

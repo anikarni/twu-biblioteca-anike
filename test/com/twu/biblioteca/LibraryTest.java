@@ -236,4 +236,11 @@ public class LibraryTest {
     public void isNotLoggedIn(){
         assertFalse(library.isLoggedIn());
     }
+
+    @Test
+    public void showsProfile(){
+        loginCustomer();
+        library.showProfile();
+        assertThat(outContent.toString(), containsString("Username: " + library.getCurrentCustomer().getUsername()));
+    }
 }

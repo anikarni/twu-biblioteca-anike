@@ -10,7 +10,7 @@ import java.util.Scanner;
  */
 public class Library {
     private static String[] OPTIONS = {"List Books", "Login", "Checkout Book", "Return Book",
-            "List Movies", "Checkout Movie", "Return Book", "Quit"};
+            "List Movies", "Checkout Movie", "Return Book", "View My Profile", "Quit"};
 
     private Book[] books;
     private Movie[] movies;
@@ -67,8 +67,10 @@ public class Library {
             listItems(movies);
         }else if(option.equals("Checkout Movie")) {
             askToCheckout(movies);
-        }else if(option.equals("Return Movie")){
+        }else if(option.equals("Return Movie")) {
             askToReturn(movies);
+        }else if(option.equals("View My Profile")){
+            showProfile();
         }else if(option.equals("Quit")) {
             quitLibrary();
         }else{
@@ -162,5 +164,13 @@ public class Library {
 
     public boolean isLoggedIn(){
         return this.currentCustomer != null;
+    }
+
+    public void showProfile(){
+        if(isLoggedIn()){
+            System.out.println(this.currentCustomer.toString());
+        }else{
+            System.out.println("You must login to see your profile.");
+        }
     }
 }
