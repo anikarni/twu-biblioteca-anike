@@ -105,9 +105,13 @@ public class Library {
     }
 
     public void askToReturn(Item[] items){
-        System.out.println("Which item would you like to return? (title only)");
-        Scanner sc = new Scanner(System.in);
-        returnItem(sc.nextLine(), items);
+        if(isLoggedIn()) {
+            System.out.println("Which item would you like to return? (title only)");
+            Scanner sc = new Scanner(System.in);
+            returnItem(sc.nextLine(), items);
+        }else{
+            System.out.println("You must login to return an item.");
+        }
     }
 
     public void returnItem(String title, Item[] items){
@@ -115,7 +119,7 @@ public class Library {
         for(Item item: items){
             type = item.getType();
             if(item.getTitle().equals(title)){
-                item.returned();
+                this.currentCustomer.returnItem(item);
                 System.out.println("Thank you for returning the " + type + ".");
                 return;
             }

@@ -30,4 +30,10 @@ public class Customer {
         this.items.add(item);
         item.checkout();
     }
+
+    public void returnItem(Item item){
+        int i = items.indexOf(item);
+        this.items.remove(i);
+        item.returned();
+    }
 }

@@ -152,6 +152,8 @@ public class LibraryTest {
 
     @Test
     public void chooseReturnBook(){
+        loginCustomer();
+        library.checkout("Book Example", books);
         ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
         System.setIn(inContent);
         library.selectOption("Return Book");
@@ -160,6 +162,8 @@ public class LibraryTest {
 
     @Test
     public void chooseReturnMovie(){
+        loginCustomer();
+        library.checkout("Title", movies);
         ByteArrayInputStream inContent = new ByteArrayInputStream("Title".getBytes());
         System.setIn(inContent);
         library.selectOption("Return Movie");
@@ -186,12 +190,14 @@ public class LibraryTest {
 
     @Test
     public void returnBookUnsuccessfully(){
+        loginCustomer();
         library.returnItem("fdfsd", books);
         assertThat(outContent.toString(), containsString("That is not a valid book to return."));
     }
 
     @Test
     public void returnMovieUnsuccessfully(){
+        loginCustomer();
         library.returnItem("fdfsd", movies);
         assertThat(outContent.toString(), containsString("That is not a valid movie to return."));
     }
