@@ -44,8 +44,8 @@ public class LibraryTest {
     }
 
     @Test
-    public void printsAvailableBooks(){
-        library.showAvailableBooks();
+    public void printsBooks(){
+        library.showBooks();
         assertThat(outContent.toString(), containsString("Book Example, Anike, 1991"));
     }
 
@@ -117,7 +117,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void returntBookUnsuccessfully(){
+    public void returnBookUnsuccessfully(){
         library.returnBook("fdfsd");
         assertThat(outContent.toString(), containsString("That is not a valid book to return."));
     }

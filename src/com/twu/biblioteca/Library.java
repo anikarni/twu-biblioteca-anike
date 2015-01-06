@@ -39,8 +39,8 @@ public class Library {
         System.out.println("Welcome to Biblioteca!");
     }
 
-    public void showAvailableBooks(){
-        for (Book book: getAvailableBooks()){
+    public void showBooks(){
+        for (Book book: getBooks()){
             System.out.println(book.getTitle() + ", " + book.getAuthor() + ", " + book.getYear());
         }
     }
@@ -54,7 +54,7 @@ public class Library {
 
     public void selectOption(String option){
         if(option.equals("List Books")) {
-            showAvailableBooks();
+            showBooks();
         }else if(option.equals("Quit")) {
             quitLibrary();
         }else if(option.equals("Checkout Book")){
