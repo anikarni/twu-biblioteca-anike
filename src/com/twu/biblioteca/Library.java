@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import javax.crypto.CipherSpi;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -8,15 +9,19 @@ import java.util.Scanner;
  * Created by anikarni on 29/12/14.
  */
 public class Library {
-    private static String[] OPTIONS = {"List Books", "Checkout Book", "Return Book",
+    private static String[] OPTIONS = {"List Books", "Login", "Checkout Book", "Return Book",
             "List Movies", "Checkout Movie", "Return Book", "Quit"};
 
     private Book[] books;
     private Movie[] movies;
+    private Customer[] customers;
+    private Customer currentCustomer;
 
-    public Library(Book[] books, Movie[] movies){
+    public Library(Book[] books, Movie[] movies, Customer[] customers){
         this.books = books;
         this.movies = movies;
+        this.customers = customers;
+        this.currentCustomer = null;
     }
 
     public Book[] getBooks(){ return this.books; }
@@ -52,6 +57,8 @@ public class Library {
     public void selectOption(String option){
         if(option.equals("List Books")) {
             listItems(books);
+        }else if(option.equals("Login")){
+            login();
         }else if(option.equals("Checkout Book")){
             askToCheckout(books);
         }else if(option.equals("Return Book")){
@@ -71,10 +78,6 @@ public class Library {
 
     public void invalidOption(){
         System.out.println("Select a valid option!");
-    }
-
-    public void quitLibrary(){
-        System.out.println("Goodbye!");
     }
 
     public void askToCheckout(Item[] items){
@@ -114,5 +117,42 @@ public class Library {
             }
         }
         System.out.println("That is not a valid " + type + " to return.");
+    }
+
+    public void quitLibrary(){
+        System.out.println("Goodbye!");
+    }
+
+    public void login(){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Username: ");
+        String username = sc.nextLine();
+        System.out.print("Password: ");
+        String password = sc.nextLine();
+        findCustomer(username, password);
+    }
+
+    public void findCustomer(String username, String password){
+        for(Customer customer: this.customers){
+            if(customer.getUsername().equals(username)){
+                if(customer.isPassword(password)){
+                    System.out.println("Successfully logged in!");
+                    this.currentCustomer = customer;
+                    return;
+                }else {
+                    System.out.println("Password does not match.");
+                    return;
+                }
+            }
+        }
+        System.out.println("Username does not exist.");
+    }
+
+    public Customer getCurrentCustomer(){
+        return this.currentCustomer;
+    }
+
+    public boolean isLoggedIn(){
+        return this.currentCustomer != null;
     }
 }

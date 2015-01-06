@@ -20,7 +20,9 @@ public class LibraryTest {
     Book[] books = {book};
     Movie movie = new Movie("Title", 2000, "director", "2");
     Movie[] movies = {movie};
-    Library library = new Library(books, movies);
+    Customer customer = new Customer("aarni", "123");
+    Customer[] customers = {customer};
+    Library library = new Library(books, movies, customers);
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
@@ -170,5 +172,29 @@ public class LibraryTest {
     public void returnMovieUnsuccessfully(){
         library.returnItem("fdfsd", movies);
         assertThat(outContent.toString(), containsString("That is not a valid movie to return."));
+    }
+
+    @Test
+    public void logsIn(){
+        ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n123".getBytes());
+        System.setIn(inContent);
+        library.login();
+        assertEquals(customer, library.getCurrentCustomer());
+    }
+
+    @Test
+    public void doesNotLoginWithWrongUsername(){
+        ByteArrayInputStream inContent = new ByteArrayInputStream("aarni2\n123".getBytes());
+        System.setIn(inContent);
+        library.login();
+        assertThat(outContent.toString(), containsString("Username does not exist."));
+    }
+
+    @Test
+    public void doesNotLoginWithWrongPassword(){
+        ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n1234".getBytes());
+        System.setIn(inContent);
+        library.login();
+        assertThat(outContent.toString(), containsString("Password does not match."));
     }
 }

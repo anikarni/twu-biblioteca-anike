@@ -10,7 +10,9 @@ public class BibliotecaApp {
         Book[] books = {book, book1};
         Movie movie = new Movie("Name", 2000, "director", "2");
         Movie[] movies = {movie};
-        Library library = new Library(books, movies);
+        Customer customer = new Customer("aarni", "123");
+        Customer[] customers = {customer};
+        Library library = new Library(books, movies, customers);
 
         Scanner sc = new Scanner(System.in);
         String option = "";
