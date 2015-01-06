@@ -8,40 +8,37 @@ import java.util.Scanner;
  * Created by anikarni on 29/12/14.
  */
 public class Library {
-    private static String[] OPTIONS = {"List Books", "Checkout Book", "Return Book", "Quit"};
+    private static String[] OPTIONS = {"List Books", "Checkout Book", "Return Book",
+            "List Movies", "Checkout Movie", "Return Book", "Quit"};
 
     private Book[] books;
-    private List<Book> availableBooks;
+    private Movie[] movies;
 
-    public Library(Book[] books){
+    public Library(Book[] books, Movie[] movies){
         this.books = books;
-        this.availableBooks = setAvailableBooks();
+        this.movies = movies;
     }
 
     public Book[] getBooks(){ return this.books; }
+    public Movie[] getMovies(){ return this.movies; }
 
-    public List<Book> setAvailableBooks(){
-        List<Book> available = new ArrayList<Book>();
-        for(Book book: this.books){
-            if(book.getStatus().equals("available")){
-                available.add(book);
+    public List<Item> getAvailable(Item[] items){
+        List<Item> available = new ArrayList<Item>();
+        for(Item i: items){
+            if(i.getStatus().equals("available")){
+                available.add(i);
             }
         }
         return available;
-    }
-
-    public List<Book> getAvailableBooks(){
-        this.availableBooks = setAvailableBooks();
-        return this.availableBooks;
     }
 
     public void welcomeUser(){
         System.out.println("Welcome to Biblioteca!");
     }
 
-    public void showBooks(){
-        for (Book book: getBooks()){
-            System.out.println(book.toString());
+    public void listItems(Item[] items){
+        for (Item item: items){
+            System.out.println(item.toString());
         }
     }
 
@@ -54,13 +51,19 @@ public class Library {
 
     public void selectOption(String option){
         if(option.equals("List Books")) {
-            showBooks();
+            listItems(books);
+        }else if(option.equals("Checkout Book")){
+            askToCheckout(books);
+        }else if(option.equals("Return Book")){
+            askToReturn(books);
+        }else if(option.equals("List Movies")) {
+            listItems(movies);
+        }else if(option.equals("Checkout Movie")) {
+            askToCheckout(movies);
+        }else if(option.equals("Return Movie")){
+            askToReturn(movies);
         }else if(option.equals("Quit")) {
             quitLibrary();
-        }else if(option.equals("Checkout Book")){
-            askToCheckout();
-        }else if(option.equals("Return Book")){
-            askToReturn();
         }else{
             invalidOption();
         }
@@ -74,37 +77,42 @@ public class Library {
         System.out.println("Goodbye!");
     }
 
-    public void askToCheckout(){
-        System.out.println("Which book would you like to checkout?");
+    public void askToCheckout(Item[] items){
+        System.out.println("Which item would you like to checkout? (title only)");
         Scanner sc = new Scanner(System.in);
-        checkout(sc.nextLine());
+        checkout(sc.nextLine(), items);
     }
 
-    public void checkout(String title){
-        for(Book book: this.availableBooks){
-            if(book.getTitle().equals(title)){
-                book.checkout();
-                System.out.println(book.getTitle() + " successfully checkout out. Thank you! Enjoy the book.");
+    public void checkout(String title, Item[] items){
+        String type = "";
+        for(Item item: getAvailable(items)){
+            type = item.getType();
+            if(item.getTitle().equals(title)){
+                item.checkout();
+                System.out.println(item.getTitle() + " successfully checkout out. Thank you! Enjoy the " +
+                        type + ".");
                 return;
             }
         }
-        System.out.println("That book is not available.");
+        System.out.println("That " + type + " is not available.");
     }
 
-    public void askToReturn(){
-        System.out.println("Which book would you like to return?");
+    public void askToReturn(Item[] items){
+        System.out.println("Which item would you like to return? (title only)");
         Scanner sc = new Scanner(System.in);
-        returnBook(sc.nextLine());
+        returnItem(sc.nextLine(), items);
     }
 
-    public void returnBook(String title){
-        for(Book book: this.books){
-            if(book.getTitle().equals(title)){
-                book.returned();
-                System.out.println("Thank you for returning the book.");
+    public void returnItem(String title, Item[] items){
+       String type = "";
+        for(Item item: items){
+            type = item.getType();
+            if(item.getTitle().equals(title)){
+                item.returned();
+                System.out.println("Thank you for returning the " + type + ".");
                 return;
             }
         }
-        System.out.println("That is not a valid book to return.");
+        System.out.println("That is not a valid " + type + " to return.");
     }
 }

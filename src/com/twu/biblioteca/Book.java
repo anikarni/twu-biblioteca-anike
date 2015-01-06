@@ -3,17 +3,19 @@ package com.twu.biblioteca;
 /**
  * Created by anikarni on 29/12/14.
  */
-public class Book {
+public class Book implements Item {
     private String title;
     private String author;
     private int year;
     private String status;
+    private String type;
 
     public Book(String title, String author, int year){
         this.title = title;
         this.author = author;
         this.year = year;
         this.status = "available";
+        this.type = "book";
     }
 
     @Override
@@ -26,6 +28,7 @@ public class Book {
     }
 
     public String getAuthor() { return this.author; }
+    public String getType() { return this.type; }
 
     public int getYear() { return this.year; }
 

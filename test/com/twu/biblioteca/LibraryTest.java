@@ -18,7 +18,9 @@ import static org.junit.Assert.*;
 public class LibraryTest {
     Book book = new Book("Book Example", "Anike", 1991);
     Book[] books = {book};
-    Library library = new Library(books);
+    Movie movie = new Movie("Title", 2000, "director", "2");
+    Movie[] movies = {movie};
+    Library library = new Library(books, movies);
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
@@ -38,6 +40,11 @@ public class LibraryTest {
     }
 
     @Test
+    public void getsMovies() {
+        assertArrayEquals(movies, library.getMovies());
+    }
+
+    @Test
     public void welcomeUser(){
         library.welcomeUser();
         assertThat(outContent.toString(), containsString("Welcome to Biblioteca!"));
@@ -45,7 +52,7 @@ public class LibraryTest {
 
     @Test
     public void printsBooks(){
-        library.showBooks();
+        library.listItems(books);
         assertThat(outContent.toString(), containsString("Book Example, Anike, 1991"));
     }
 
@@ -80,45 +87,88 @@ public class LibraryTest {
     }
 
     @Test
-    public void chooseCheckout(){
+    public void chooseCheckoutBook(){
         ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
         System.setIn(inContent);
         library.selectOption("Checkout Book");
-        assertThat(outContent.toString(), containsString("Which book would you like to checkout?"));
+        assertThat(outContent.toString(), containsString("Which item would you like to checkout? (title only)"));
+    }
+
+    @Test
+    public void chooseCheckoutMovie(){
+        ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
+        System.setIn(inContent);
+        library.selectOption("Checkout Movie");
+        assertThat(outContent.toString(), containsString("Which item would you like to checkout? (title only)"));
     }
 
     @Test
     public void checkoutBookSuccessfully(){
-        library.checkout("Book Example");
-        assertNotEquals(books, library.getAvailableBooks());
+        library.checkout("Book Example", books);
+        assertNotEquals(books, library.getAvailable(books));
         assertThat(outContent.toString(), containsString("Thank you! Enjoy the book."));
     }
 
     @Test
+    public void checkoutMovieSuccessfully(){
+        library.checkout("Title", movies);
+        assertNotEquals(movies, library.getAvailable(movies));
+        assertThat(outContent.toString(), containsString("Thank you! Enjoy the movie."));
+    }
+
+    @Test
     public void checkoutBookUnsuccessfully(){
-        library.checkout("fdfsd");
+        library.checkout("fdfsd", books);
         assertThat(outContent.toString(), containsString("That book is not available."));
     }
 
     @Test
-    public void chooseReturn(){
+    public void checkoutMovieUnsuccessfully(){
+        library.checkout("fdfsd", movies);
+        assertThat(outContent.toString(), containsString("That movie is not available."));
+    }
+
+    @Test
+    public void chooseReturnBook(){
         ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
         System.setIn(inContent);
         library.selectOption("Return Book");
-        assertThat(outContent.toString(), containsString("Which book would you like to return?"));
+        assertThat(outContent.toString(), containsString("Which item would you like to return?"));
+    }
+
+    @Test
+    public void chooseReturnMovie(){
+        ByteArrayInputStream inContent = new ByteArrayInputStream("Title".getBytes());
+        System.setIn(inContent);
+        library.selectOption("Return Movie");
+        assertThat(outContent.toString(), containsString("Which item would you like to return?"));
     }
 
     @Test
     public void returnBookSuccessfully(){
-        library.checkout("Book Example");
-        library.returnBook("Book Example");
-        assertEquals("Book Example", library.getAvailableBooks().get(0).getTitle());
+        library.checkout("Book Example", books);
+        library.returnItem("Book Example", books);
+        assertEquals("Book Example", library.getAvailable(books).get(0).getTitle());
         assertThat(outContent.toString(), containsString("Thank you for returning the book."));
     }
 
     @Test
+    public void returnMovieSuccessfully(){
+        library.checkout("Title", movies);
+        library.returnItem("Title", movies);
+        assertEquals("Title", library.getAvailable(movies).get(0).getTitle());
+        assertThat(outContent.toString(), containsString("Thank you for returning the movie."));
+    }
+
+    @Test
     public void returnBookUnsuccessfully(){
-        library.returnBook("fdfsd");
+        library.returnItem("fdfsd", books);
         assertThat(outContent.toString(), containsString("That is not a valid book to return."));
+    }
+
+    @Test
+    public void returnMovieUnsuccessfully(){
+        library.returnItem("fdfsd", movies);
+        assertThat(outContent.toString(), containsString("That is not a valid movie to return."));
     }
 }
