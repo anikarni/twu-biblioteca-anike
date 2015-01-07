@@ -10,7 +10,8 @@ import java.util.Scanner;
  */
 public class Library {
     private static String[] OPTIONS = {"List Books", "Login", "Checkout Book", "Return Book",
-            "List Movies", "Checkout Movie", "Return Book", "View My Profile", "Quit"};
+            "List Movies", "Checkout Movie", "Return Book", "View My Profile", "View Customer Rentals",
+            "Quit"};
 
     private Book[] books;
     private Movie[] movies;
@@ -55,6 +56,7 @@ public class Library {
     }
 
     public void selectOption(String option){
+        //interface
         if(option.equals("List Books")) {
             listItems(books);
         }else if(option.equals("Login")){
@@ -69,8 +71,10 @@ public class Library {
             askToCheckout(movies);
         }else if(option.equals("Return Movie")) {
             askToReturn(movies);
-        }else if(option.equals("View My Profile")){
+        }else if(option.equals("View My Profile")) {
             showProfile();
+        }else if(option.equals("View Customer Rentals")){
+            listCustomerRentals();
         }else if(option.equals("Quit")) {
             quitLibrary();
         }else{
@@ -171,7 +175,7 @@ public class Library {
     }
 
     public boolean isAdmin(){
-        return this.currentUser.getType() == "admin";
+        return this.currentUser.getType().equals("Librarian");
     }
 
     public void listCustomerRentals(){
@@ -179,6 +183,8 @@ public class Library {
             for(User user: this.users){
                 System.out.println(user.rentalDetails());
             }
+        }else{
+            System.out.println("You must be an admin to view this information");
         }
     }
 }

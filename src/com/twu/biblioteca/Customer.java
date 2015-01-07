@@ -6,44 +6,16 @@ import java.util.List;
 /**
  * Created by aarni on 1/6/15.
  */
-public class Customer implements User {
-    private String userNumber;
-    private String password;
+public class Customer extends User {
     private String name;
     private String email;
     private String phoneNumber;
-    private String type;
-    private List<Item> items = new ArrayList<Item>();
 
     public Customer(String userNumber, String password, String name, String email, String phoneNumber){
-        this.userNumber = userNumber;
-        this.password = password;
+        super(userNumber, password);
         this.name = name;
-        this. email = email;
+        this.email = email;
         this.phoneNumber = phoneNumber;
-        this.type = "customer";
-    }
-
-    public String getUserNumber(){ return this.userNumber; }
-    public String getType(){ return this.type; }
-
-    public boolean isPassword(String password){
-        return this.password.equals(password);
-    }
-
-    public List<Item> checkedOutItems(){
-        return this.items;
-    }
-
-    public void checkout(Item item){
-        this.items.add(item);
-        item.checkout();
-    }
-
-    public void returnItem(Item item){
-        int i = items.indexOf(item);
-        this.items.remove(i);
-        item.returned();
     }
 
     @Override

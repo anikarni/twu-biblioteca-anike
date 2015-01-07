@@ -3,34 +3,23 @@ package com.twu.biblioteca;
 /**
  * Created by aarni on 1/7/15.
  */
-public class Librarian implements User {
-    String userNumber;
-    String password;
-    String type;
+public class Librarian extends User {
 
     public Librarian(String userNumber, String password){
-        this.userNumber = userNumber;
-        this.password = password;
-        this.type = "admin";
+        super(userNumber, password);
     }
 
-    public String getUserNumber(){
-        return this.userNumber;
+    @Override
+    public String toString(){
+        return "User Number: " + this.userNumber + "\nType: " + this.getType();
     }
-
-    public String getType(){
-        return this.type;
-    }
-
-    public boolean isPassword(String password){
-        return this.password.equals(password);
-    }
-
-    public void checkout(Item item){}
-    public void returnItem(Item item){}
 
     public String rentalDetails(){
-        return "-"+ this.userNumber + "\nnone";
+        String rentalDetails = "-" + this.userNumber;
+        for (Item item: this.items){
+            rentalDetails += "\n" + item.getTitle();
+        }
+        return rentalDetails;
     }
 
 }

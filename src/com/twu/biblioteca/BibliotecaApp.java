@@ -11,8 +11,9 @@ public class BibliotecaApp {
         Movie movie = new Movie("Name", 2000, "director", "2");
         Movie[] movies = {movie};
         Customer customer = new Customer("aarni", "123", "Anike", "aarni@example", "1234-123");
-        Customer[] customers = {customer};
-        Library library = new Library(books, movies, customers);
+        Librarian librarian = new Librarian("librarian", "123");
+        User[] users = {customer, librarian};
+        Library library = new Library(books, movies, users);
 
         Scanner sc = new Scanner(System.in);
         String option = "";
