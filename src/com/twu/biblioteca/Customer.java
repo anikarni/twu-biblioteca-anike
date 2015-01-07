@@ -7,16 +7,16 @@ import java.util.List;
  * Created by aarni on 1/6/15.
  */
 public class Customer {
-    private String username;
+    private String userNumber;
     private String password;
     private List<Item> items = new ArrayList<Item>();
 
-    public Customer(String username, String password){
-        this.username = username;
+    public Customer(String userNumber, String password){
+        this.userNumber = userNumber;
         this.password = password;
     }
 
-    public String getUsername(){ return this.username; }
+    public String getUserNumber(){ return this.userNumber; }
 
     public boolean isPassword(String password){
         return this.password.equals(password);
@@ -39,6 +39,6 @@ public class Customer {
 
     @Override
     public String toString(){
-        return "Username: " + this.username + "\nPassword: " + this.password;
+        return "User Number: " + this.userNumber + "\nPassword: " + this.password;
     }
 }

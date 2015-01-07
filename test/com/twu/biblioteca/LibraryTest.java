@@ -140,14 +140,14 @@ public class LibraryTest {
     public void checkoutBookUnsuccessfully(){
         loginCustomer();
         library.checkout("fdfsd", books);
-        assertThat(outContent.toString(), containsString("That book is not available."));
+        assertThat(outContent.toString(), containsString("That item is not available."));
     }
 
     @Test
     public void checkoutMovieUnsuccessfully(){
         loginCustomer();
         library.checkout("fdfsd", movies);
-        assertThat(outContent.toString(), containsString("That movie is not available."));
+        assertThat(outContent.toString(), containsString("That item is not available."));
     }
 
     @Test
@@ -192,14 +192,14 @@ public class LibraryTest {
     public void returnBookUnsuccessfully(){
         loginCustomer();
         library.returnItem("fdfsd", books);
-        assertThat(outContent.toString(), containsString("That is not a valid book to return."));
+        assertThat(outContent.toString(), containsString("That is not a valid item to return."));
     }
 
     @Test
     public void returnMovieUnsuccessfully(){
         loginCustomer();
         library.returnItem("fdfsd", movies);
-        assertThat(outContent.toString(), containsString("That is not a valid movie to return."));
+        assertThat(outContent.toString(), containsString("That is not a valid item to return."));
     }
 
     @Test
@@ -211,11 +211,11 @@ public class LibraryTest {
     }
 
     @Test
-    public void doesNotLoginWithWrongUsername(){
+    public void doesNotLoginWithWronguserNumber(){
         ByteArrayInputStream inContent = new ByteArrayInputStream("aarni2\n123".getBytes());
         System.setIn(inContent);
         library.login();
-        assertThat(outContent.toString(), containsString("Username does not exist."));
+        assertThat(outContent.toString(), containsString("User number does not exist."));
     }
 
     @Test
@@ -241,6 +241,6 @@ public class LibraryTest {
     public void showsProfile(){
         loginCustomer();
         library.showProfile();
-        assertThat(outContent.toString(), containsString("Username: " + library.getCurrentCustomer().getUsername()));
+        assertThat(outContent.toString(), containsString("User Number: " + library.getCurrentCustomer().getUserNumber()));
     }
 }

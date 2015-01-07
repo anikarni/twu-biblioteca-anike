@@ -18,9 +18,9 @@ public class BibliotecaApp {
         String option = "";
 
         library.welcomeUser();
+        library.showMenu();
 
         while(!option.equals("Quit")) {
-            library.showMenu();
             option = sc.nextLine();
             library.selectOption(option);
         }

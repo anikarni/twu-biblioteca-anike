@@ -93,17 +93,15 @@ public class Library {
     }
 
     public void checkout(String title, Item[] items){
-        String type = "";
         for(Item item: getAvailable(items)){
-            type = item.getType();
             if(item.getTitle().equals(title)){
                 this.currentCustomer.checkout(item);
                 System.out.println(item.getTitle() + " successfully checkout out. Thank you! Enjoy the " +
-                        type + ".");
+                        item.getType() + ".");
                 return;
             }
         }
-        System.out.println("That " + type + " is not available.");
+        System.out.println("That item is not available.");
     }
 
     public void askToReturn(Item[] items){
@@ -117,16 +115,14 @@ public class Library {
     }
 
     public void returnItem(String title, Item[] items){
-       String type = "";
         for(Item item: items){
-            type = item.getType();
             if(item.getTitle().equals(title)){
                 this.currentCustomer.returnItem(item);
-                System.out.println("Thank you for returning the " + type + ".");
+                System.out.println("Thank you for returning the " + item.getType() + ".");
                 return;
             }
         }
-        System.out.println("That is not a valid " + type + " to return.");
+        System.out.println("That is not a valid item to return.");
     }
 
     public void quitLibrary(){
@@ -135,16 +131,16 @@ public class Library {
 
     public void login(){
         Scanner sc = new Scanner(System.in);
-        System.out.print("Username: ");
-        String username = sc.nextLine();
+        System.out.print("User Number: ");
+        String userNumber = sc.nextLine();
         System.out.print("Password: ");
         String password = sc.nextLine();
-        findCustomer(username, password);
+        findCustomer(userNumber, password);
     }
 
-    public void findCustomer(String username, String password){
+    public void findCustomer(String userNumber, String password){
         for(Customer customer: this.customers){
-            if(customer.getUsername().equals(username)){
+            if(customer.getUserNumber().equals(userNumber)){
                 if(customer.isPassword(password)){
                     System.out.println("Successfully logged in!");
                     this.currentCustomer = customer;
@@ -155,7 +151,7 @@ public class Library {
                 }
             }
         }
-        System.out.println("Username does not exist.");
+        System.out.println("User number does not exist.");
     }
 
     public Customer getCurrentCustomer(){
