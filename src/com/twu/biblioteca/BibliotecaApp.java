@@ -10,7 +10,7 @@ public class BibliotecaApp {
         Book[] books = {book, book1};
         Movie movie = new Movie("Name", 2000, "director", "2");
         Movie[] movies = {movie};
-        Customer customer = new Customer("aarni", "123");
+        Customer customer = new Customer("aarni", "123", "Anike", "aarni@example", "1234-123");
         Customer[] customers = {customer};
         Library library = new Library(books, movies, customers);
 

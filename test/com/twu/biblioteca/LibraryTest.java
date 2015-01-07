@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 
 /**
@@ -20,9 +21,10 @@ public class LibraryTest {
     Book[] books = {book};
     Movie movie = new Movie("Title", 2000, "director", "2");
     Movie[] movies = {movie};
-    Customer customer = new Customer("aarni", "123");
-    Customer[] customers = {customer};
-    Library library = new Library(books, movies, customers);
+    Customer customer = new Customer("aarni", "123", "Anike", "aarni@example", "1234-123");
+    Librarian librarian = new Librarian("librarian", "23");
+    User[] users = {customer, librarian};
+    Library library = new Library(books, movies, users);
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
@@ -207,7 +209,7 @@ public class LibraryTest {
         ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n123".getBytes());
         System.setIn(inContent);
         library.login();
-        assertEquals(customer, library.getCurrentCustomer());
+        assertEquals(customer, library.getCurrentUser());
     }
 
     @Test
@@ -227,7 +229,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void isLoggedInWhenCustomerLogsIn(){
+    public void isLoggedInWhenUserLogsIn(){
         loginCustomer();
         assertTrue(library.isLoggedIn());
     }
@@ -241,6 +243,21 @@ public class LibraryTest {
     public void showsProfile(){
         loginCustomer();
         library.showProfile();
-        assertThat(outContent.toString(), containsString("User Number: " + library.getCurrentCustomer().getUserNumber()));
+        assertThat(outContent.toString(), containsString(library.getCurrentUser().toString()));
+    }
+
+    @Test
+    public void listsCustomersItems(){
+        ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n123".getBytes());
+        System.setIn(inContent);
+        library.login();
+        library.checkout("Title", movies);
+
+        ByteArrayInputStream inContent2 = new ByteArrayInputStream("librarian\n23".getBytes());
+        System.setIn(inContent2);
+        library.login();
+        library.listCustomerRentals();
+
+        assertThat(outContent.toString(), containsString("-Anike, aarni@example, 1234-123\nTitle"));
     }
 }

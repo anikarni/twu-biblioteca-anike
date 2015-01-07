@@ -14,14 +14,14 @@ public class Library {
 
     private Book[] books;
     private Movie[] movies;
-    private Customer[] customers;
-    private Customer currentCustomer;
+    private User[] users;
+    private User currentUser;
 
-    public Library(Book[] books, Movie[] movies, Customer[] customers){
+    public Library(Book[] books, Movie[] movies, User[] users){
         this.books = books;
         this.movies = movies;
-        this.customers = customers;
-        this.currentCustomer = null;
+        this.users = users;
+        this.currentUser = null;
     }
 
     public Book[] getBooks(){ return this.books; }
@@ -95,7 +95,7 @@ public class Library {
     public void checkout(String title, Item[] items){
         for(Item item: getAvailable(items)){
             if(item.getTitle().equals(title)){
-                this.currentCustomer.checkout(item);
+                this.currentUser.checkout(item);
                 System.out.println(item.getTitle() + " successfully checkout out. Thank you! Enjoy the " +
                         item.getType() + ".");
                 return;
@@ -117,7 +117,7 @@ public class Library {
     public void returnItem(String title, Item[] items){
         for(Item item: items){
             if(item.getTitle().equals(title)){
-                this.currentCustomer.returnItem(item);
+                this.currentUser.returnItem(item);
                 System.out.println("Thank you for returning the " + item.getType() + ".");
                 return;
             }
@@ -135,15 +135,15 @@ public class Library {
         String userNumber = sc.nextLine();
         System.out.print("Password: ");
         String password = sc.nextLine();
-        findCustomer(userNumber, password);
+        findUser(userNumber, password);
     }
 
-    public void findCustomer(String userNumber, String password){
-        for(Customer customer: this.customers){
-            if(customer.getUserNumber().equals(userNumber)){
-                if(customer.isPassword(password)){
+    public void findUser(String userNumber, String password){
+        for(User user: this.users){
+            if(user.getUserNumber().equals(userNumber)){
+                if(user.isPassword(password)){
                     System.out.println("Successfully logged in!");
-                    this.currentCustomer = customer;
+                    this.currentUser = user;
                     return;
                 }else {
                     System.out.println("Password does not match.");
@@ -154,19 +154,31 @@ public class Library {
         System.out.println("User number does not exist.");
     }
 
-    public Customer getCurrentCustomer(){
-        return this.currentCustomer;
+    public User getCurrentUser(){
+        return this.currentUser;
     }
 
     public boolean isLoggedIn(){
-        return this.currentCustomer != null;
+        return this.currentUser != null;
     }
 
     public void showProfile(){
         if(isLoggedIn()){
-            System.out.println(this.currentCustomer.toString());
+            System.out.println(this.currentUser.toString());
         }else{
             System.out.println("You must login to see your profile.");
+        }
+    }
+
+    public boolean isAdmin(){
+        return this.currentUser.getType() == "admin";
+    }
+
+    public void listCustomerRentals(){
+        if(isLoggedIn() && isAdmin()){
+            for(User user: this.users){
+                System.out.println(user.rentalDetails());
+            }
         }
     }
 }
