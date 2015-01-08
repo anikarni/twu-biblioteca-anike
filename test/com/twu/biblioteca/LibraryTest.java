@@ -2,7 +2,6 @@ package com.twu.biblioteca;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -31,7 +30,7 @@ public class LibraryTest {
     public void loginCustomer(){
         ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n123".getBytes());
         System.setIn(inContent);
-        library.login();
+        library.selectOption("Login");
     }
 
     @Before
@@ -58,12 +57,6 @@ public class LibraryTest {
     public void welcomeUser(){
         library.welcomeUser();
         assertThat(outContent.toString(), containsString("Welcome to Biblioteca!"));
-    }
-
-    @Test
-    public void printsBooks(){
-        library.listItems(books);
-        assertThat(outContent.toString(), containsString("Book Example, Anike, 1991"));
     }
 
     @Test
@@ -123,39 +116,10 @@ public class LibraryTest {
     }
 
     @Test
-    public void checkoutBookSuccessfully(){
-        loginCustomer();
-        library.checkout("Book Example", books);
-        assertNotEquals(books, library.getAvailable(books));
-        assertThat(outContent.toString(), containsString("Thank you! Enjoy the book."));
-    }
-
-    @Test
-    public void checkoutMovieSuccessfully(){
-        loginCustomer();
-        library.checkout("Title", movies);
-        assertNotEquals(movies, library.getAvailable(movies));
-        assertThat(outContent.toString(), containsString("Thank you! Enjoy the movie."));
-    }
-
-    @Test
-    public void checkoutBookUnsuccessfully(){
-        loginCustomer();
-        library.checkout("fdfsd", books);
-        assertThat(outContent.toString(), containsString("That item is not available."));
-    }
-
-    @Test
-    public void checkoutMovieUnsuccessfully(){
-        loginCustomer();
-        library.checkout("fdfsd", movies);
-        assertThat(outContent.toString(), containsString("That item is not available."));
-    }
-
-    @Test
     public void chooseReturnBook(){
         loginCustomer();
-        library.checkout("Book Example", books);
+        CheckoutOption option = new CheckoutOption(library, library.getBooks());
+        option.checkout("Book Example");
         ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
         System.setIn(inContent);
         library.selectOption("Return Book");
@@ -165,7 +129,8 @@ public class LibraryTest {
     @Test
     public void chooseReturnMovie(){
         loginCustomer();
-        library.checkout("Title", movies);
+        CheckoutOption option = new CheckoutOption(library, library.getMovies());
+        option.checkout("Title");
         ByteArrayInputStream inContent = new ByteArrayInputStream("Title".getBytes());
         System.setIn(inContent);
         library.selectOption("Return Movie");
@@ -173,50 +138,18 @@ public class LibraryTest {
     }
 
     @Test
-    public void returnBookSuccessfully(){
-        loginCustomer();
-        library.checkout("Book Example", books);
-        library.returnItem("Book Example", books);
-        assertEquals("Book Example", library.getAvailable(books).get(0).getTitle());
-        assertThat(outContent.toString(), containsString("Thank you for returning the book."));
-    }
-
-    @Test
-    public void returnMovieSuccessfully(){
-        loginCustomer();
-        library.checkout("Title", movies);
-        library.returnItem("Title", movies);
-        assertEquals("Title", library.getAvailable(movies).get(0).getTitle());
-        assertThat(outContent.toString(), containsString("Thank you for returning the movie."));
-    }
-
-    @Test
-    public void returnBookUnsuccessfully(){
-        loginCustomer();
-        library.returnItem("fdfsd", books);
-        assertThat(outContent.toString(), containsString("That is not a valid item to return."));
-    }
-
-    @Test
-    public void returnMovieUnsuccessfully(){
-        loginCustomer();
-        library.returnItem("fdfsd", movies);
-        assertThat(outContent.toString(), containsString("That is not a valid item to return."));
-    }
-
-    @Test
     public void logsIn(){
         ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n123".getBytes());
         System.setIn(inContent);
-        library.login();
+        library.selectOption("Login");
         assertEquals(customer, library.getCurrentUser());
     }
 
     @Test
-    public void doesNotLoginWithWronguserNumber(){
+    public void doesNotLoginWithWrongUserNumber(){
         ByteArrayInputStream inContent = new ByteArrayInputStream("aarni2\n123".getBytes());
         System.setIn(inContent);
-        library.login();
+        library.selectOption("Login");
         assertThat(outContent.toString(), containsString("User number does not exist."));
     }
 
@@ -224,7 +157,7 @@ public class LibraryTest {
     public void doesNotLoginWithWrongPassword(){
         ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n1234".getBytes());
         System.setIn(inContent);
-        library.login();
+        library.selectOption("Login");
         assertThat(outContent.toString(), containsString("Password does not match."));
     }
 
@@ -242,22 +175,7 @@ public class LibraryTest {
     @Test
     public void showsProfile(){
         loginCustomer();
-        library.showProfile();
+        library.selectOption("View My Profile");
         assertThat(outContent.toString(), containsString(library.getCurrentUser().toString()));
-    }
-
-    @Test
-    public void listsCustomersItems(){
-        ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n123".getBytes());
-        System.setIn(inContent);
-        library.login();
-        library.checkout("Title", movies);
-
-        ByteArrayInputStream inContent2 = new ByteArrayInputStream("librarian\n23".getBytes());
-        System.setIn(inContent2);
-        library.login();
-        library.listCustomerRentals();
-
-        assertThat(outContent.toString(), containsString("-Anike, aarni@example, 1234-123\nTitle"));
     }
 }
