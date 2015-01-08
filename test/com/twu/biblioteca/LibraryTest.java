@@ -25,10 +25,10 @@ public class LibraryTest {
     User[] users = {customer, librarian};
     Library library = new Library(books, movies, users);
 
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
     public void loginCustomer(){
-        ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n123".getBytes());
+        final ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n123".getBytes());
         System.setIn(inContent);
         library.selectOption("Login");
     }

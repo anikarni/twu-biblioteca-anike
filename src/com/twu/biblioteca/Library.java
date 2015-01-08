@@ -7,9 +7,6 @@ import java.util.List;
  * Created by anikarni on 29/12/14.
  */
 public class Library {
-    private static String[] OPTIONS = {"List Books", "Login", "Checkout Book", "Return Book",
-            "List Movies", "Checkout Movie", "Return Book", "View My Profile", "View Customer Rentals",
-            "Quit"};
 
     private Book[] books;
     private Movie[] movies;
@@ -53,10 +50,8 @@ public class Library {
     }
 
     public void showMenu(){
-        System.out.println("Menu:");
-        for (String option: OPTIONS){
-            System.out.println(option);
-        }
+        UI ui = new UI();
+        ui.showMenu();
     }
 
     public void selectOption(String option){
