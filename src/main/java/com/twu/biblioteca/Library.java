@@ -12,6 +12,7 @@ public class Library {
     private Movie[] movies;
     private User[] users;
     private User currentUser;
+    UI ui = new UI();
 
     public Library(Book[] books, Movie[] movies, User[] users){
         this.books = books;
@@ -46,11 +47,10 @@ public class Library {
     }
 
     public void welcomeUser(){
-        System.out.println("Welcome to Biblioteca!");
+        ui.welcomeUser();
     }
 
     public void showMenu(){
-        UI ui = new UI();
         ui.showMenu();
     }
 

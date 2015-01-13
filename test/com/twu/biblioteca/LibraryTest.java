@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by anikarni on 29/12/14.
@@ -32,6 +33,9 @@ public class LibraryTest {
         System.setIn(inContent);
         library.selectOption("Login");
     }
+
+    @Before
+    public void mockUI() { library.ui = mock(UI.class); }
 
     @Before
     public void setUpStreams() {
@@ -56,19 +60,13 @@ public class LibraryTest {
     @Test
     public void welcomeUser(){
         library.welcomeUser();
-        assertThat(outContent.toString(), containsString("Welcome to Biblioteca!"));
+        verify(library.ui).welcomeUser();
     }
 
     @Test
     public void showsMenu(){
         library.showMenu();
-        assertThat(outContent.toString(), containsString("Menu:"));
-    }
-
-    @Test
-    public void showsMenuOptionListBooks(){
-        library.showMenu();
-        assertThat(outContent.toString(), containsString("List Books"));
+        verify(library.ui).showMenu();
     }
 
     @Test

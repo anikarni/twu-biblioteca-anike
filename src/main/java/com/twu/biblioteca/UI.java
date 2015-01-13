@@ -9,6 +9,10 @@ public class UI {
             "List Movies", "Checkout Movie", "Return Book", "View My Profile", "View Customer Rentals",
             "Quit"};
 
+    public void welcomeUser(){
+        System.out.println("Welcome to Biblioteca!");
+    }
+
     public void showMenu(){
         System.out.println("Menu:");
         for (String option: UI.OPTIONS){

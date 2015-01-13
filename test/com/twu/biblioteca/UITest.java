@@ -12,6 +12,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 
 public class UITest {
+    UI subject = new UI();
+
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
     @Before
@@ -25,9 +27,20 @@ public class UITest {
     }
 
     @Test
+    public void welcomeUser(){
+        subject.welcomeUser();
+        assertThat(outContent.toString(), containsString("Welcome to Biblioteca!"));
+    }
+
+    @Test
     public void testShowsMenu() throws Exception {
-        UI subject = new UI();
         subject.showMenu();
         assertThat(outContent.toString(), containsString("Menu:"));
+    }
+
+    @Test
+    public void showsMenuOptionListBooks(){
+        subject.showMenu();
+        assertThat(outContent.toString(), containsString("List Books"));
     }
 }
