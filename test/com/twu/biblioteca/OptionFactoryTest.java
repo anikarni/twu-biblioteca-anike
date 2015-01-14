@@ -1,42 +1,117 @@
 package com.twu.biblioteca;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
-import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class OptionFactoryTest {
     OptionFactory subject = new OptionFactory();
-    Book book = new Book("Book Example", "Anike", 1991);
-    Book[] books = {book};
-    Movie movie = new Movie("Title", 2000, "director", "2");
-    Movie[] movies = {movie};
-    Customer customer = new Customer("aarni", "123", "Anike", "aarni@example", "1234-123");
-    Librarian librarian = new Librarian("librarian", "23");
-    User[] users = {customer, librarian};
-    Library library = new Library(books, movies, users);
+    @Mock Library library;
+    @Mock Option option;
 
-    final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    @Test
+    public void createsListBooksOption() throws Exception {
+        when(option.is(OptionFactory.LIST_BOOKS)).thenReturn(true);
 
-    @Before
-    public void setUpStreams() {
-        System.setOut(new PrintStream(outContent));
-    }
+        Option actual = subject.selectOption(option, library);
 
-    @After
-    public void cleanUpStreams() {
-        System.setOut(null);
+        assertThat(actual, instanceOf(ListItemsOption.class));
     }
 
     @Test
-    public void testSelectOption() throws Exception {
-        subject.selectOption("List Books", library);
-        assertThat(outContent.toString(), containsString("Book Example, Anike, 1991"));
+    public void createsListMoviesOption() throws Exception {
+        when(option.is(OptionFactory.LIST_MOVIES)).thenReturn(true);
+
+        Option actual = subject.selectOption(option, library);
+
+        assertThat(actual, instanceOf(ListItemsOption.class));
+    }
+
+    @Test
+    public void createsLoginOption() throws Exception {
+        when(option.is(OptionFactory.LOGIN)).thenReturn(true);
+
+        Option actual = subject.selectOption(option, library);
+
+        assertThat(actual, instanceOf(LoginOption.class));
+    }
+
+    @Test
+    public void createsCheckoutBookOption() throws Exception {
+        when(option.is(OptionFactory.CHECKOUT_BOOK)).thenReturn(true);
+
+        Option actual = subject.selectOption(option, library);
+
+        assertThat(actual, instanceOf(CheckoutOption.class));
+    }
+
+    @Test
+    public void createsCheckoutMovieOption() throws Exception {
+        when(option.is(OptionFactory.CHECKOUT_MOVIE)).thenReturn(true);
+
+        Option actual = subject.selectOption(option, library);
+
+        assertThat(actual, instanceOf(CheckoutOption.class));
+    }
+
+    @Test
+    public void createsReturnBookOption() throws Exception {
+        when(option.is(OptionFactory.RETURN_BOOK)).thenReturn(true);
+
+        Option actual = subject.selectOption(option, library);
+
+        assertThat(actual, instanceOf(ReturnOption.class));
+    }
+
+    @Test
+    public void createsReturnMovieOption() throws Exception {
+        when(option.is(OptionFactory.RETURN_MOVIE)).thenReturn(true);
+
+        Option actual = subject.selectOption(option, library);
+
+        assertThat(actual, instanceOf(ReturnOption.class));
+    }
+
+    @Test
+    public void createsMyProfileOption() throws Exception {
+        when(option.is(OptionFactory.VIEW_MY_PROFILE)).thenReturn(true);
+
+        Option actual = subject.selectOption(option, library);
+
+        assertThat(actual, instanceOf(MyProfileOption.class));
+    }
+
+    @Test
+    public void createsListRentalsOption() throws Exception {
+        when(option.is(OptionFactory.VIEW_CUSTOMER_RENTALS)).thenReturn(true);
+
+        Option actual = subject.selectOption(option, library);
+
+        assertThat(actual, instanceOf(ListRentalsOption.class));
+    }
+
+    @Test
+    public void createsQuitOption() throws Exception {
+        when(option.is(OptionFactory.QUIT)).thenReturn(true);
+
+        Option actual = subject.selectOption(option, library);
+
+        assertThat(actual, instanceOf(QuitOption.class));
+    }
+
+    @Test
+    public void invalidatesOption() throws Exception {
+        when(option.is(anyString())).thenReturn(false);
+
+        Option actual = subject.selectOption(option, library);
+
+        assertThat(actual, instanceOf(Option.class));
     }
 }
