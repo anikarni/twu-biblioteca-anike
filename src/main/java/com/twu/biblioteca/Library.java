@@ -12,6 +12,7 @@ public class Library {
     private Movie[] movies;
     private User[] users;
     private User currentUser;
+    Option selection = new Option();
     UI ui = new UI();
 
     public Library(Book[] books, Movie[] movies, User[] users){
@@ -55,7 +56,6 @@ public class Library {
     }
 
     public void selectOption(String option){
-        Option selection = new Option();
         selection.selectOption(option, this);
     }
 

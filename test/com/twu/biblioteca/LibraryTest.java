@@ -3,6 +3,7 @@ package com.twu.biblioteca;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,13 +30,14 @@ public class LibraryTest {
     final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
     public void loginCustomer(){
-        final ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n123".getBytes());
-        System.setIn(inContent);
-        library.selectOption("Login");
+        library.setCurrentUser(customer);
     }
 
     @Before
-    public void mockUI() { library.ui = mock(UI.class); }
+    public void setUpMock() {
+        library.ui = mock(UI.class);
+        library.selection = mock(Option.class);
+    }
 
     @Before
     public void setUpStreams() {
@@ -70,93 +72,9 @@ public class LibraryTest {
     }
 
     @Test
-    public void showsBookListWhenChosen(){
+    public void testSelectOption(){
         library.selectOption("List Books");
-        assertThat(outContent.toString(), containsString("Book Example, Anike, 1991"));
-    }
-
-    @Test
-    public void invalidatesOption(){
-        library.selectOption("List book");
-        assertThat(outContent.toString(), containsString("Select a valid option!"));
-    }
-
-    @Test
-    public void quits(){
-        library.selectOption("Quit");
-        assertThat(outContent.toString(), containsString("Goodbye!"));
-    }
-
-    @Test
-    public void chooseCheckoutBook(){
-        loginCustomer();
-        ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
-        System.setIn(inContent);
-        library.selectOption("Checkout Book");
-        assertThat(outContent.toString(), containsString("Which item would you like to checkout? (title only)"));
-    }
-
-    @Test
-    public void chooseCheckoutMovie(){
-        loginCustomer();
-        ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
-        System.setIn(inContent);
-        library.selectOption("Checkout Movie");
-        assertThat(outContent.toString(), containsString("Which item would you like to checkout? (title only)"));
-    }
-
-    @Test
-    public void chooseCheckoutMovieWithoutLogin(){
-        ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
-        System.setIn(inContent);
-        library.selectOption("Checkout Movie");
-        assertThat(outContent.toString(), containsString("You must login to checkout an item."));
-    }
-
-    @Test
-    public void chooseReturnBook(){
-        loginCustomer();
-        CheckoutOption option = new CheckoutOption(library, library.getBooks());
-        option.checkout("Book Example");
-        ByteArrayInputStream inContent = new ByteArrayInputStream("Book Example".getBytes());
-        System.setIn(inContent);
-        library.selectOption("Return Book");
-        assertThat(outContent.toString(), containsString("Which item would you like to return?"));
-    }
-
-    @Test
-    public void chooseReturnMovie(){
-        loginCustomer();
-        CheckoutOption option = new CheckoutOption(library, library.getMovies());
-        option.checkout("Title");
-        ByteArrayInputStream inContent = new ByteArrayInputStream("Title".getBytes());
-        System.setIn(inContent);
-        library.selectOption("Return Movie");
-        assertThat(outContent.toString(), containsString("Which item would you like to return?"));
-    }
-
-    @Test
-    public void logsIn(){
-        ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n123".getBytes());
-        System.setIn(inContent);
-        library.selectOption("Login");
-        assertEquals(customer, library.getCurrentUser());
-    }
-
-    @Test
-    public void doesNotLoginWithWrongUserNumber(){
-        ByteArrayInputStream inContent = new ByteArrayInputStream("aarni2\n123".getBytes());
-        System.setIn(inContent);
-        library.selectOption("Login");
-        assertThat(outContent.toString(), containsString("User number does not exist."));
-    }
-
-    @Test
-    public void doesNotLoginWithWrongPassword(){
-        ByteArrayInputStream inContent = new ByteArrayInputStream("aarni\n1234".getBytes());
-        System.setIn(inContent);
-        library.selectOption("Login");
-        assertThat(outContent.toString(), containsString("Password does not match."));
+        verify(library.selection).selectOption("List Books", library);
     }
 
     @Test
@@ -170,10 +88,4 @@ public class LibraryTest {
         assertFalse(library.isLoggedIn());
     }
 
-    @Test
-    public void showsProfile(){
-        loginCustomer();
-        library.selectOption("View My Profile");
-        assertThat(outContent.toString(), containsString(library.getCurrentUser().toString()));
-    }
 }
