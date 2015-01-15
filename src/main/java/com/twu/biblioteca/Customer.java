@@ -7,12 +7,14 @@ import java.util.List;
  * Created by aarni on 1/6/15.
  */
 public class Customer extends User {
+    private CustomerInfo customerInfo;
     private String name;
     private String email;
     private String phoneNumber;
 
-    public Customer(String userNumber, String password, String name, String email, String phoneNumber){
+    public Customer(String userNumber, String password, String name, String email, String phoneNumber, CustomerInfo customerInfo){
         super(userNumber, password);
+        this.customerInfo = this.customerInfo;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
