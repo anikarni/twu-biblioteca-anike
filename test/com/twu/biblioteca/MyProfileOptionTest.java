@@ -33,7 +33,7 @@ public class MyProfileOptionTest {
     public void showsProfile(){
         when(library.isLoggedIn()).thenReturn(true);
         when(library.getCurrentUser()).thenReturn(customer);
-        when(customer.toString()).thenReturn("test");
+        when(customer.showDetails()).thenReturn("test");
 
         subject.showProfile();
 

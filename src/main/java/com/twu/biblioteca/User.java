@@ -38,6 +38,6 @@ public abstract class User {
         item.returned();
     }
 
-    public abstract String toString();
+    public abstract String showDetails();
     public abstract String rentalDetails();
 }

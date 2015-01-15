@@ -16,7 +16,7 @@ public class MyProfileOption extends Option {
 
     public void showProfile(){
         if(library.isLoggedIn()){
-            System.out.println(this.library.getCurrentUser().toString());
+            System.out.println(this.library.getCurrentUser().showDetails());
         }else{
             System.out.println("You must login to see your profile.");
         }

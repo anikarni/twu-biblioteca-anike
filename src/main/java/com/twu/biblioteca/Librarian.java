@@ -10,7 +10,7 @@ public class Librarian extends User {
     }
 
     @Override
-    public String toString(){
+    public String showDetails(){
         return "User Number: " + this.userNumber + "\nType: " + this.getType();
     }
 

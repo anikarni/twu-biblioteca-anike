@@ -19,7 +19,7 @@ public class Customer extends User {
     }
 
     @Override
-    public String toString(){
+    public String showDetails(){
         return "Name: " + this.name + "\nEmail: " + this.email + "\nPhone:" + this.phoneNumber;
     }
 
