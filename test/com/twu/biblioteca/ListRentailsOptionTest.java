@@ -20,7 +20,8 @@ public class ListRentailsOptionTest {
     Book[] books = {book};
     Movie movie = new Movie("Title", 2000, "director", "2");
     Movie[] movies = {movie};
-    Customer customer = new Customer("aarni", "123", "Anike", "aarni@example", "1234-123", mock(CustomerInfo.class));
+    CustomerInfo customerInfo = new CustomerInfo("Anike", "aarni@example", "1234-123");
+    Customer customer = new Customer("aarni", "123", customerInfo);
     Librarian librarian = new Librarian("librarian", "23");
     User[] users = {customer, librarian};
     Library library = new Library(books, movies, users);

@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
  * Created by aarni on 1/6/15.
  */
 public class CustomerTest {
-    Customer customer = new Customer("aarni", "123", "Anike", "aarni@example", "1234-123", mock(CustomerInfo.class));
+    Customer customer = new Customer("aarni", "123", mock(CustomerInfo.class));
     Book book = new Book("Book", "author", 1999);
     List<Item> items = new ArrayList<Item>();
 
