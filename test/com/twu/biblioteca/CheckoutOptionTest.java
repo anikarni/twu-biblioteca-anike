@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -22,15 +23,16 @@ import static org.mockito.Mockito.when;
  * Created by aarni on 1/8/15.
  */
 
+@RunWith(MockitoJUnitRunner.class)
 public class CheckoutOptionTest {
-    Library library = mock(Library.class);
-    User user = mock(User.class);
+    @Mock Library library;
+    @Mock User user;
     Book book = new Book("Book Example", "Anike", 1991);
     Book[] books = {book};
     Movie movie = new Movie("Name", 2000, "director", "2");
     Movie[] movies = {movie};
-    List<Book> bookList = new ArrayList<Book>();
-    List<Movie> movieList = new ArrayList<Movie>();
+    List<Item> bookList = new ArrayList<Item>();
+    List<Item> movieList = new ArrayList<Item>();
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
@@ -47,7 +49,7 @@ public class CheckoutOptionTest {
     @Test
     public void checkoutBookSuccessfully(){
         bookList.add(book);
-        Mockito.doReturn(bookList).when(library).getAvailable(books);
+        when(library.getAvailable(books)).thenReturn(bookList);
         when(library.getCurrentUser()).thenReturn(user);
 
         CheckoutOption subject = new CheckoutOption(library, books);
@@ -59,7 +61,7 @@ public class CheckoutOptionTest {
     @Test
     public void checkoutMovieSuccessfully(){
         movieList.add(movie);
-        Mockito.doReturn(movieList).when(library).getAvailable(movies);
+        when(library.getAvailable(movies)).thenReturn(movieList);
         when(library.getCurrentUser()).thenReturn(user);
 
         CheckoutOption subject = new CheckoutOption(library, movies);
@@ -71,7 +73,7 @@ public class CheckoutOptionTest {
     @Test
     public void checkoutBookUnsuccessfully(){
         bookList.add(book);
-        Mockito.doReturn(bookList).when(library).getAvailable(books);
+        doReturn(bookList).when(library).getAvailable(books);
 
         CheckoutOption subject = new CheckoutOption(library, books);
         subject.checkout("Ddasddasda");
