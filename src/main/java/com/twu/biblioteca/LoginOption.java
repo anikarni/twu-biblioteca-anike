@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import java.io.PrintStream;
 import java.util.Scanner;
 
 /**
@@ -7,9 +8,16 @@ import java.util.Scanner;
  */
 public class LoginOption extends Option {
     Library library;
+    private final PrintStream viewContext;
 
     public LoginOption(Library library){
         this.library = library;
+        this.viewContext = System.out;
+    }
+
+    public LoginOption(Library library, PrintStream viewContext) {
+        this.library = library;
+        this.viewContext = viewContext;
     }
 
     public void execute(){
@@ -18,9 +26,9 @@ public class LoginOption extends Option {
 
     public void login(){
         Scanner sc = new Scanner(System.in);
-        System.out.print("User Number: ");
+        viewContext.print("User Number: ");
         String userNumber = sc.nextLine();
-        System.out.print("Password: ");
+        viewContext.print("Password: ");
         String password = sc.nextLine();
         findUser(userNumber, password);
     }
@@ -29,15 +37,15 @@ public class LoginOption extends Option {
         for(User user: this.library.getUsers()){
             if(user.getUserNumber().equals(userNumber)){
                 if(user.isPassword(password)){
-                    System.out.println("Successfully logged in!");
+                    viewContext.println("Successfully logged in!");
                     this.library.setCurrentUser(user);
                     return;
                 }else {
-                    System.out.println("Password does not match.");
+                    viewContext.println("Password does not match.");
                     return;
                 }
             }
         }
-        System.out.println("User number does not exist.");
+        viewContext.println("User number does not exist.");
     }
 }

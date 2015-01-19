@@ -20,19 +20,8 @@ public class LoginOptionTest {
     Book[] books = {mock(Book.class)};
     Movie[] movies = {mock(Movie.class)};
     Library library = spy(new Library(books, movies, users));
-    LoginOption option = spy(new LoginOption(library));
-
-    final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-
-    @Before
-    public void setUpStreams() {
-        System.setOut(new PrintStream(outContent));
-    }
-
-    @After
-    public void cleanUpStreams() {
-        System.setOut(null);
-    }
+    private PrintStream viewContext = mock(PrintStream.class);
+    LoginOption option = spy(new LoginOption(library, viewContext));
 
     @Test
     public void testLogin(){
@@ -52,7 +41,7 @@ public class LoginOptionTest {
 
         option.findUser("123", "123");
 
-        assertThat(outContent.toString(), containsString("Successfully logged in!"));
+        verify(viewContext).println(contains("Successfully logged in!"));
     }
 
     @Test
@@ -61,7 +50,7 @@ public class LoginOptionTest {
 
         option.findUser("123", "123");
 
-        assertThat(outContent.toString(), containsString("User number does not exist."));
+        verify(viewContext).println(contains("User number does not exist."));
     }
 
     @Test
@@ -71,6 +60,6 @@ public class LoginOptionTest {
 
         option.findUser("123", "123");
 
-        assertThat(outContent.toString(), containsString("Password does not match."));
+        verify(viewContext).println(contains("Password does not match."));
     }
 }
